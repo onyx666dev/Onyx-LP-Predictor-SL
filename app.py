@@ -9,7 +9,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS for styling with EXACT colors
+# Custom CSS for styling
 st.markdown("""
 <style>
     .main-title {
@@ -32,6 +32,30 @@ st.markdown("""
         font-style: italic;
         margin-top: 50px;
     }
+    .stButton>button {
+        width: 100%;
+        height: 80px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+    div[data-testid="column"] {
+        display: flex;
+        justify-content: center;
+    }
+    /* Button colors */
+    button[key="simple_btn"] {
+        background-color: #4CAF50 !important;
+        color: white !important;
+    }
+    button[key="poly_btn"] {
+        background-color: #2196F3 !important;
+        color: white !important;
+    }
+    button[key="multiple_btn"] {
+        background-color: #FF9800 !important;
+        color: white !important;
+    }
     .result-box {
         padding: 20px;
         border-radius: 10px;
@@ -47,41 +71,6 @@ st.markdown("""
     .error-box {
         background-color: #ffebee;
         color: #f44336;
-    }
-    
-    /* Custom button styling */
-    .custom-button {
-        display: block;
-        width: 100%;
-        padding: 20px;
-        margin: 15px 0;
-        font-size: 16px;
-        font-weight: bold;
-        color: white;
-        text-align: center;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-        line-height: 1.6;
-    }
-    .green-btn {
-        background-color: #4CAF50;
-    }
-    .green-btn:hover {
-        background-color: #45a049;
-    }
-    .blue-btn {
-        background-color: #2196F3;
-    }
-    .blue-btn:hover {
-        background-color: #0b7dda;
-    }
-    .orange-btn {
-        background-color: #FF9800;
-    }
-    .orange-btn:hover {
-        background-color: #e68900;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -141,64 +130,33 @@ if st.session_state.page == 'menu':
     st.write("")
     st.write("")
     
-    # Centered buttons with fixed width
-    col1, col2, col3 = st.columns([1, 2, 1])
+    # Button 1: Simple Linear Regression
+    if st.button("🎓 Simple Linear Regression\n(Study Hours → Marks)", key="simple_btn"):
+        if models['simple'] is None:
+            st.error("❌ simple.pkl model file not found!")
+        else:
+            go_to_simple()
+            st.rerun()
     
-    with col2:
-        # Button 1: Simple Linear Regression (GREEN #4CAF50)
-        if st.button("🎓 Simple Linear Regression\n(Study Hours → Marks)", key="simple_btn", use_container_width=True):
-            if models['simple'] is None:
-                st.error("❌ simple.pkl model file not found!")
-            else:
-                go_to_simple()
-                st.rerun()
-        
-        st.markdown("""
-        <style>
-        button[kind="secondary"][data-testid="baseButton-secondary"]:has(p:contains("Simple Linear Regression")) {
-            background-color: #4CAF50 !important;
-            color: white !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        st.write("")
-        
-        # Button 2: Polynomial Regression (BLUE #2196F3)
-        if st.button("📈 Polynomial Regression\n(Level → Salary)", key="poly_btn", use_container_width=True):
-            if models['poly_transformer'] is None or models['poly_lin_reg'] is None:
-                st.error("❌ polynomial_transformer.pkl or linear_model.pkl file not found!")
-            else:
-                go_to_polynomial()
-                st.rerun()
-        
-        st.markdown("""
-        <style>
-        button[kind="secondary"][data-testid="baseButton-secondary"]:has(p:contains("Polynomial Regression")) {
-            background-color: #2196F3 !important;
-            color: white !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        st.write("")
-        
-        # Button 3: Multiple Linear Regression (ORANGE #FF9800)
-        if st.button("💼 Multiple Linear Regression\n(Startup Profit Prediction)", key="multiple_btn", use_container_width=True):
-            if models['multiple'] is None:
-                st.error("❌ model.pkl model file not found!")
-            else:
-                go_to_multiple()
-                st.rerun()
-        
-        st.markdown("""
-        <style>
-        button[kind="secondary"][data-testid="baseButton-secondary"]:has(p:contains("Multiple Linear Regression")) {
-            background-color: #FF9800 !important;
-            color: white !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+    st.write("")
+    
+    # Button 2: Polynomial Regression
+    if st.button("📈 Polynomial Regression\n(Level → Salary)", key="poly_btn"):
+        if models['poly_transformer'] is None or models['poly_lin_reg'] is None:
+            st.error("❌ polynomial_transformer.pkl or linear_model.pkl file not found!")
+        else:
+            go_to_polynomial()
+            st.rerun()
+    
+    st.write("")
+    
+    # Button 3: Multiple Linear Regression
+    if st.button("💼 Multiple Linear Regression\n(Startup Profit Prediction)", key="multiple_btn"):
+        if models['multiple'] is None:
+            st.error("❌ model.pkl model file not found!")
+        else:
+            go_to_multiple()
+            st.rerun()
     
     st.markdown('<div class="signature">@ ONYX PYTHON 2ND APP | 2025</div>', unsafe_allow_html=True)
 
